@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}商品列表{% endblock %}
+
+{% block style %}
+  {{ block.super }}
+  <style>
+    h1 {
+      font-size: 1.75rem;
+      font-weight: bold;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #3182ce;
+      position: relative;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .product-card {
+      background-color: white;
+      border-radius: 0.5rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .product-card:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-card img,
+    .product-card .no-image {
+      height: 12rem;
+      width: 100%;
+      object-fit: cover;
+    }
+
+    .product-card .no-image {
+      background-color: #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #a0aec0;
+      font-size: 1rem;
+    }
+
+    .product-card .content {
+      padding: 1rem;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-card h2 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .product-card p {
+      color: #e53e3e;
+      font-weight: bold;
+      font-size: 1.125rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .product-card a.btn {
+      margin-top: auto;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <h1>Product List</h1>
+  <div class="product-grid">
+    {% for p in products %}
+      <div class="product-card">
+<!--        {% if p.image_url %}-->
+<!--          <img src="{{ p.image_url }}" alt="{{ p.name }}">-->
+<!--        {% else %}-->
+<!--          <div class="no-image">无图像</div>-->
+<!--        {% endif %}-->
+        <div class="content">
+          <h2>
+            <a href="{% url 'shop:product_detail' p.pk %}" class="hover:text-blue-600">
+              {{ p.name }}
+            </a>
+          </h2>
+          <p>¥{{ p.price }}</p>
+          <a href="{% url 'shop:add_to_cart' p.pk %}" class="btn btn-primary">Add To Cart</a>
+        </div>
+      </div>
+    {% empty %}
+      <p>No Products。</p>
+    {% endfor %}
+  </div>
+{% endblock %}

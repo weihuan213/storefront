@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}商品搜索{% endblock %}
+{% block style %}
+  {{ block.super }}
+  <style>
+    h1 {
+      font-size: 1.75rem;
+      font-weight: bold;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #3182ce;
+      position: relative;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .product-card {
+      background-color: white;
+      border-radius: 0.5rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .product-card:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-card img,
+    .product-card .no-image {
+      height: 12rem;
+      width: 100%;
+      object-fit: cover;
+    }
+
+    .product-card .no-image {
+      background-color: #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #a0aec0;
+      font-size: 1rem;
+    }
+
+    .product-card .content {
+      padding: 1rem;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-card h2 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .product-card p {
+      color: #e53e3e;
+      font-weight: bold;
+      font-size: 1.125rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .product-card a.btn {
+      margin-top: auto;
+    }
+  </style>
+{% endblock %}
+{% block content %}
+<div class="container mx-auto px-4">
+  <h1 class="text-2xl font-bold my-4">搜索商品</h1>
+
+  <!-- 搜索框 -->
+  <form action="{% url 'shop:search' %}" method="get" class="mb-8">
+    <input type="text"
+           name="q"
+           value="{{ query }}"
+           placeholder="输入商品名称或描述..."
+           class="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
+  </form>
+
+  <!-- 搜索结果 -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    {% for p in products %}
+      {% include "shop/_product_card.html" %}  <!-- 复用商品卡片组件 -->
+    {% empty %}
+      <p class="text-gray-500">未找到相关商品</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

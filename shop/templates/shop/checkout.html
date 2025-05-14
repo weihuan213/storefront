@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}订单结算{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4">
+  <h1 class="text-2xl font-bold my-4">Order Check In</h1>
+
+  <div class="grid md:grid-cols-2 gap-8">
+    <!-- 订单信息 -->
+    <div class="bg-white shadow rounded-lg p-6">
+      <h2 class="text-xl font-bold mb-4">Order Detail</h2>
+      {% for item in order.items.all %}
+        <div class="flex justify-between py-2 border-b">
+          <span>{{ item.product.name }} ×{{ item.quantity }}</span>
+          <span>¥{{ item.get_total_price }}</span>
+        </div>
+      {% endfor %}
+      <div class="flex justify-between py-2 font-bold mt-4">
+        <span>总计：</span>
+        <span class="text-red-500">¥{{ order.total_price }}</span>
+      </div>
+    </div>
+
+    <!-- 支付表单 -->
+    <div class="bg-white shadow rounded-lg p-6">
+      <h2 class="text-xl font-bold mb-4">Payment Info</h2>
+      <form method="post">
+        {% csrf_token %}
+        <!-- 实际项目需添加支付接口字段 -->
+        <div class="space-y-4">
+          <div>
+            <label class="block mb-2">Credit Card</label>
+            <input type="text" class="w-full p-2 border rounded" placeholder="4242 4242 4242 4242">
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block mb-2">Vaild Date</label>
+              <input type="text" class="w-full p-2 border rounded" placeholder="MM/YY">
+            </div>
+            <div>
+              <label class="block mb-2">CVC</label>
+              <input type="text" class="w-full p-2 border rounded" placeholder="123">
+            </div>
+          </div>
+          <button type="submit"
+                  class="w-full bg-blue-500 text-white py-3 rounded hover:bg-blue-600 transition">
+            Pay
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

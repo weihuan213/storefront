@@ -1,0 +1,20 @@
+<!-- 用于复用商品卡片（商品列表页/搜索结果页共用） -->
+<div class="border rounded-lg shadow hover:shadow-lg transition p-4">
+<!--  {% if p.image_url %}-->
+<!--    <img src="{{ p.image_url }}" alt="{{ p.name }}" class="w-full h-48 object-cover mb-2 rounded">-->
+<!--  {% else %}-->
+<!--    <div class="w-full h-48 bg-gray-200 mb-2 rounded flex items-center justify-center">-->
+<!--      <span class="text-gray-500">无图像</span>-->
+<!--    </div>-->
+<!--  {% endif %}-->
+  <h2 class="text-lg font-semibold mb-1">
+    <a href="{% url 'shop:product_detail' p.pk %}" class="hover:text-blue-600">
+      {{ p.name }}
+    </a>
+  </h2>
+  <p class="text-red-500 font-bold mb-2">¥{{ p.price }}</p>
+  <a href="{% url 'shop:add_to_cart' p.pk %}"
+     class="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
+    add to cart
+  </a>
+</div>
